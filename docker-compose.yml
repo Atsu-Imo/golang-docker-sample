@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  api:
+    image: golang
+    volumes:
+      - .:/go
+    ports: 
+      - "1323:1323"
+    command: bash -c "unset GOPATH && go build && ./golang-docker-sample" #???omosugiru??????
