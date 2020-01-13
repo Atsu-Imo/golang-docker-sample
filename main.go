@@ -10,5 +10,6 @@ func main() {
 	e.Use(middleware.Logger())
 	e.GET("/hello", hello)
 	e.GET("/channels", getChannels)
+	e.GET("/videos", getVideos)
 	e.Logger.Fatal(e.Start(":1323"))
 }

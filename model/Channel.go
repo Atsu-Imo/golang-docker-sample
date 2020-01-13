@@ -2,13 +2,14 @@ package model
 
 import "github.com/jinzhu/gorm"
 
+//Channel チャンネルテーブル
 type Channel struct {
 	gorm.Model
-	channelId string
-	name string
-	title string
-	url string
-	thumbnail string
-	category int
-	rotation int
+	ChannelID string
+	Name string
+	Title string
+	URL string
+	Thumbnail string
+	Category int
+	Rotation int
 }

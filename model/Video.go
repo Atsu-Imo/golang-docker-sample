@@ -6,12 +6,13 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+//Video ビデオテーブル
 type Video struct {
 	gorm.Model
-	videoID     string
-	channelID   string
-	title       string
-	url         string
-	length      string
-	publishedAt time.Time
+	VideoID     string
+	ChannelID   string
+	Title       string
+	URL         string
+	Length      string
+	PublishedAt time.Time
 }
