@@ -1,4 +1,4 @@
-package main
+package api
 
 import(
 	"net/http"
@@ -16,7 +16,7 @@ func TestHello(t *testing.T) {
 	c := e.NewContext(req, rec)
 
 	c.SetPath("hello")
-	if assert.NoError(t, hello(c)) {
+	if assert.NoError(t, Hello(c)) {
 		assert.Equal(t, expect, rec.Body.String())
 	}
 }

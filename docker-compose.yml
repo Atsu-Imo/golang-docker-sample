@@ -2,8 +2,23 @@ version: '3.7'
 services:
   api:
     image: golang
+    container_name: api
     volumes:
       - .:/go
     ports: 
       - "1323:1323"
+    depends_on: 
+      - postgres
     command: bash -c "unset GOPATH && go build && ./golang-docker-sample" #???omosugiru??????
+  postgres:
+    image: postgres
+    restart: always
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: test_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/init:/docker-entrypoint-initdb.d
