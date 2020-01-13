@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"net/http"
@@ -11,16 +11,16 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-func getVideos(c echo.Context) error {
+func GetChannels(c echo.Context) error {
 	db, err := gorm.Open("postgres", "host=postgres port=5432 user=postgres password=password dbname=test_db sslmode=disable")
 	if err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
 	
 	defer db.Close()
-	var videos []model.Video
-	db.Find(&videos)
-	json, err :=json.Marshal(videos)
+	var channels []model.Channel
+	db.Find(&channels)
+	json, err :=json.Marshal(channels)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
