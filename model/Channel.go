@@ -13,3 +13,31 @@ type Channel struct {
 	Category int
 	Rotation int
 }
+
+type channelRepository struct {
+	db *gorm.DB
+}
+type ChannelRepository interface {
+	FindAll() []Channel
+	FindByChannelID(channelID string) Channel
+}
+
+func NewChannelRepository(dbInfo string) *channelRepository{
+	db, err := gorm.Open("postgres", dbInfo)
+	if err != nil {
+		panic(err)
+	}
+	return &channelRepository{db: db}
+}
+
+func (r channelRepository) FindAll() []Channel {
+	var channels []Channel
+	r.db.Find(&channels)
+	return channels
+}
+
+func (r channelRepository) FindByChannelID(channelID string) Channel {
+	var channel Channel
+	r.db.Where("channel_ID = ?", channelID).Find(&channel)
+	return channel
+}
