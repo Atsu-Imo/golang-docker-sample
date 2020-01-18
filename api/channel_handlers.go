@@ -1,18 +1,22 @@
 package api
 
 import (
+	"os"
 	"net/http"
 	"encoding/json"
 
 	"github.com/Atsu-Imo/golang-docker-sample/model"
-	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
-
-	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/joho/godotenv"
 )
 
+//GetChannels すべてのチャンネル
 func GetChannels(c echo.Context) error {
-	db, err := gorm.Open("postgres", "host=postgres port=5432 user=postgres password=password dbname=test_db sslmode=disable")
+	err := godotenv.Load()
+	if err != nil {
+		return c.String(http.StatusInternalServerError, err.Error())
+	}
+	db, err := model.Connect(os.Getenv("DB"))
 	if err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}

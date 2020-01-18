@@ -16,5 +16,10 @@ $ docker-compose up
 
 [Echo - High performance, minimalist Go web framework](https://echo.labstack.com/)
 
-シンプルに見えたので採用しました。
+シンプルに見えたので採用しました。  
 他のフレームワーク(`grilla`, `Gin`などなど)については使用したことがないので比較はできませんが、現時点では問題ないです。
+
+### gorm
+
+ORM。  
+コネクションプールなどなどは分かっていない。
