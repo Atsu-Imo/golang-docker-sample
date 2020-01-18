@@ -9,6 +9,7 @@ services:
       - "1323:1323"
     depends_on: 
       - postgres
+    dns: 8.8.8.8
     command: bash -c "unset GOPATH && go build && ./golang-docker-sample" #???omosugiru??????
   postgres:
     image: postgres
