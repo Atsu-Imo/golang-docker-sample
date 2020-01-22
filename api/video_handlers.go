@@ -1,28 +1,25 @@
 package api
 
 import (
-	"os"
 	"net/http"
 	"encoding/json"
 
-	"github.com/Atsu-Imo/golang-docker-sample/model"
+	"github.com/Atsu-Imo/golang-docker-sample/service"
 	"github.com/labstack/echo/v4"
-	"github.com/joho/godotenv"
 )
 
+// ChannelHandler ハンドラ
+type VideoHandler struct {
+	service service.VideoRepository
+}
+// NewChannelHandler 本来はinterfaceを返却すべきなので余裕があったら修正
+func NewVideoHandler(c service.VideoRepository) *VideoHandler {
+	return &VideoHandler{service: c}
+}
+
 //GetVideos すべてのビデオ
-func GetVideos(c echo.Context) error {
-	err := godotenv.Load()
-	if err != nil {
-		return c.String(http.StatusInternalServerError, err.Error())
-	}
-	db, err := model.Connect(os.Getenv("DB"))
-	if err != nil {
-		return c.String(http.StatusInternalServerError, err.Error())
-	}
-	defer db.Close()
-	var videos []model.Video
-	db.Find(&videos)
+func (h *VideoHandler) GetVideos(c echo.Context) error {
+	videos := h.service.FindAll()
 	json, err :=json.Marshal(videos)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
