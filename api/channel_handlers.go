@@ -8,15 +8,17 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type handler struct {
+// ChannelHandler ハンドラ
+type ChannelHandler struct {
 	channelRepository model.ChannelRepository
 }
-func NewChannelHandler(c model.ChannelRepository) *handler {
-	return &handler{channelRepository: c}
+// NewChannelHandler 本来はinterfaceを返却すべきなので余裕があったら修正
+func NewChannelHandler(c model.ChannelRepository) *ChannelHandler {
+	return &ChannelHandler{channelRepository: c}
 }
 
 //GetChannels すべてのチャンネル
-func (h handler) GetChannels(c echo.Context) error {
+func (h ChannelHandler) GetChannels(c echo.Context) error {
 	channels := h.channelRepository.FindAll()
 	json, err :=json.Marshal(channels)
 	if err != nil {
@@ -26,7 +28,7 @@ func (h handler) GetChannels(c echo.Context) error {
 }
 
 // GetChannelBy チャンネルIDを指定してチャンネル情報を取得する
-func (h handler) GetChannelBy(c echo.Context) error {
+func (h ChannelHandler) GetChannelBy(c echo.Context) error {
 	channelID := c.QueryParam("channel_id")
 	if channelID == "" {
 		return c.String(http.StatusOK, "")

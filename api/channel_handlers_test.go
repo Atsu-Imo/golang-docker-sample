@@ -26,8 +26,6 @@ func TestGetChannelBy(t *testing.T) {
     rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetPath("channel")
-	c.SetParamNames("channel_id")
-	c.SetParamValues("test")
 	c.QueryParams().Add("channel_id", "test")
 	r := newStub()
 	h := NewChannelHandler(r)
