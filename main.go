@@ -29,6 +29,7 @@ func main() {
 	videoHandler := &api.VideoHandler{VideoRepository: videoRepo}
 	e := echo.New()
 	e.Use(middleware.Logger())
+	e.Use(middleware.CORS())
 	e.GET("/hello", api.Hello)
 	e.GET("/channels", channelHandler.GetChannels)
 	e.GET("/channel", channelHandler.GetChannelBy)
