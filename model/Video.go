@@ -16,3 +16,28 @@ type Video struct {
 	Length      string
 	PublishedAt time.Time
 }
+
+type videoRepository struct {
+	db *gorm.DB
+}
+
+type VideoRepository interface {
+	FindAll() []Video
+	FindByChannelID(channelID string) []Video
+}
+
+func NewVideoRepository(db *gorm.DB) *videoRepository{
+	return &videoRepository{db: db}
+}
+
+func (r *videoRepository) FindAll() []Video {
+	var videos []Video
+	r.db.Find(&videos)
+	return videos
+}
+
+func (r *videoRepository) FindByChannelID(channelID string) []Video {
+	var videos []Video
+	r.db.Where("Channel_ID = ?", channelID).Find(&videos)
+	return videos
+}

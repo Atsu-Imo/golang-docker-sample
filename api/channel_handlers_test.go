@@ -28,9 +28,9 @@ func TestGetChannelBy(t *testing.T) {
 	c.SetPath("channel")
 	c.QueryParams().Add("channel_id", "test")
 	r := newStub()
-	h := NewChannelHandler(r)
+	h := ChannelHandler{ChannelRepository: r}
 	if assert.NoError(t, h.GetChannelBy(c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
-		assert.Equal(t, "testy", rec.Body.String())
+		assert.Equal(t, "test", rec.Body.String())
 	}
 }

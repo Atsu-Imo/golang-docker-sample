@@ -1,8 +1,10 @@
 package main
 
 import (
-	"github.com/joho/godotenv"
 	"os"
+
+	"github.com/jinzhu/gorm"
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
@@ -15,14 +17,21 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	chanRepo := model.NewChannelRepository(os.Getenv("DB"))
-	channelHandler := api.NewChannelHandler(chanRepo)
+	db, err := gorm.Open("postgres", os.Getenv("DB"))
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+	chanRepo := model.NewChannelRepository(db)
+	channelHandler := &api.ChannelHandler{ChannelRepository: chanRepo}
 
+	videoRepo := model.NewVideoRepository(db)
+	videoHandler := &api.VideoHandler{VideoRepository: videoRepo}
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.GET("/hello", api.Hello)
 	e.GET("/channels", channelHandler.GetChannels)
 	e.GET("/channel", channelHandler.GetChannelBy)
-	e.GET("/videos", api.GetVideos)
+	e.GET("/videos", videoHandler.GetVideos)
 	e.Logger.Fatal(e.Start(":1323"))
 }

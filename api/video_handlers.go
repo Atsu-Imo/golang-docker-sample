@@ -1,28 +1,20 @@
 package api
 
 import (
-	"os"
 	"net/http"
 	"encoding/json"
 
 	"github.com/Atsu-Imo/golang-docker-sample/model"
 	"github.com/labstack/echo/v4"
-	"github.com/joho/godotenv"
 )
 
+type VideoHandler struct {
+	VideoRepository model.VideoRepository
+}
+
 //GetVideos すべてのビデオ
-func GetVideos(c echo.Context) error {
-	err := godotenv.Load()
-	if err != nil {
-		return c.String(http.StatusInternalServerError, err.Error())
-	}
-	db, err := model.Connect(os.Getenv("DB"))
-	if err != nil {
-		return c.String(http.StatusInternalServerError, err.Error())
-	}
-	defer db.Close()
-	var videos []model.Video
-	db.Find(&videos)
+func (h *VideoHandler)GetVideos(c echo.Context) error {
+	videos := h.VideoRepository.FindAll()
 	json, err :=json.Marshal(videos)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())

@@ -10,16 +10,12 @@ import (
 
 // ChannelHandler ハンドラ
 type ChannelHandler struct {
-	channelRepository model.ChannelRepository
-}
-// NewChannelHandler 本来はinterfaceを返却すべきなので余裕があったら修正
-func NewChannelHandler(c model.ChannelRepository) *ChannelHandler {
-	return &ChannelHandler{channelRepository: c}
+	ChannelRepository model.ChannelRepository
 }
 
 //GetChannels すべてのチャンネル
-func (h ChannelHandler) GetChannels(c echo.Context) error {
-	channels := h.channelRepository.FindAll()
+func (h *ChannelHandler) GetChannels(c echo.Context) error {
+	channels := h.ChannelRepository.FindAll()
 	json, err :=json.Marshal(channels)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
@@ -28,12 +24,12 @@ func (h ChannelHandler) GetChannels(c echo.Context) error {
 }
 
 // GetChannelBy チャンネルIDを指定してチャンネル情報を取得する
-func (h ChannelHandler) GetChannelBy(c echo.Context) error {
+func (h *ChannelHandler) GetChannelBy(c echo.Context) error {
 	channelID := c.QueryParam("channel_id")
 	if channelID == "" {
 		return c.String(http.StatusOK, "")
 	}
-	channel := h.channelRepository.FindByChannelID(channelID)
+	channel := h.ChannelRepository.FindByChannelID(channelID)
 	json, err :=json.Marshal(channel)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
