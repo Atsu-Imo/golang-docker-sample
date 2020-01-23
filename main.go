@@ -1,13 +1,15 @@
 package main
 
 import (
-	"github.com/joho/godotenv"
 	"os"
+
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
 	"github.com/Atsu-Imo/golang-docker-sample/api"
 	"github.com/Atsu-Imo/golang-docker-sample/model"
+	"github.com/Atsu-Imo/golang-docker-sample/service"
 )
 
 func main() {
@@ -17,6 +19,8 @@ func main() {
 	}
 	chanRepo := model.NewChannelRepository(os.Getenv("DB"))
 	channelHandler := api.NewChannelHandler(chanRepo)
+	videoRepo := service.NewVideoRepository(os.Getenv("DB"))
+	videoHandler := api.NewVideoHandler(videoRepo)
 
 	e := echo.New()
 	e.Use(middleware.Logger())
