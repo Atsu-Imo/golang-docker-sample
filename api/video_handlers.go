@@ -26,7 +26,11 @@ func (h *VideoHandler) GetVideos(c echo.Context) error {
 
 // SearchVideos 条件を指定して動画を探す
 func (h *VideoHandler) SearchVideos(c echo.Context) error {
-	channelIDs := strings.Split(c.QueryParam("channel_id"), ",")
+	channelIDparam := c.QueryParam("channel_id")
+	channelIDs := strings.Split(channelIDparam, ",")
+	if len(channelIDs) == 0 {
+		channelIDs = append(channelIDs, channelIDparam)
+	}
 	videos := h.VideoRepository.FindByChannelID(channelIDs)
 	json, err := json.Marshal(videos)
 	if err != nil {
