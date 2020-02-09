@@ -34,5 +34,6 @@ func main() {
 	e.GET("/channels", channelHandler.GetChannels)
 	e.GET("/channel", channelHandler.GetChannelBy)
 	e.GET("/videos", videoHandler.GetVideos)
+	e.GET("/search", videoHandler.SearchVideos)
 	e.Logger.Fatal(e.Start(":1323"))
 }
