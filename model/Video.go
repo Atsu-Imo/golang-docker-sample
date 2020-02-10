@@ -23,7 +23,7 @@ type videoRepository struct {
 
 type VideoRepository interface {
 	FindAll() []Video
-	FindByChannelID(channelID []string) []Video
+	FindByChannelID(channelID []string, page int, limit int) []Video
 }
 
 func NewVideoRepository(db *gorm.DB) *videoRepository {
@@ -36,11 +36,12 @@ func (r *videoRepository) FindAll() []Video {
 	return videos
 }
 
-func (r *videoRepository) FindByChannelID(channelID []string) []Video {
+func (r *videoRepository) FindByChannelID(channelID []string, page int, limit int) []Video {
 	var videos []Video
 	if channelID == nil {
 		r.db.Find(&videos)
 	}
-	r.db.Where("Channel_ID in (?)", channelID).Find(&videos)
+	state := r.db.Where("Channel_ID in (?)", channelID)
+	state.Offset(page * limit).Limit(limit).Find(&videos)
 	return videos
 }

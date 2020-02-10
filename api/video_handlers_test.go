@@ -20,7 +20,7 @@ func (r *stubVideoRepository) FindAll() []model.Video {
 	return []model.Video{video1, video2}
 }
 
-func (r *stubVideoRepository) FindByChannelID(channelID []string) []model.Video {
+func (r *stubVideoRepository) FindByChannelID(channelID []string, page int, limit int) []model.Video {
 	video1 := model.Video{ChannelID: channelID[0]}
 	video2 := model.Video{ChannelID: channelID[0]}
 	return []model.Video{video1, video2}
